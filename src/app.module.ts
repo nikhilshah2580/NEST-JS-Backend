@@ -12,9 +12,7 @@ import { databaseConfig } from './config/database.config';
 
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-
       inject: [ConfigService],
-
       useFactory: databaseConfig,
     }),
   ],
