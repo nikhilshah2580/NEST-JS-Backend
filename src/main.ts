@@ -1,11 +1,29 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DataSource } from 'typeorm';
+
 import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common/services/index.js';
 
 async function bootstrap() {
-  const port = process.env.PORT ?? 3000;
   const app = await NestFactory.create(AppModule);
-  await app.listen(port);
-  Logger.log(`Server is running on http://localhost:${port}`);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    }),
+  );
+
+  const dataSource = app.get(DataSource);
+
+  if (dataSource.isInitialized) {
+    console.log('PostgreSQL database connected successfully');
+    console.log(`Database: ${dataSource.options.database}`);
+  }
+
+  await app.listen(3000);
+
+  console.log('Server running on http://localhost:3000');
 }
+
 bootstrap();
