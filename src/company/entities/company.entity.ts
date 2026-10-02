@@ -4,7 +4,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Employee } from '../../employee/entities/employee.entity';
 
 @Entity('companies')
 export class Company {
@@ -31,6 +33,9 @@ export class Company {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToMany(() => Employee, (employee) => employee.company)
+  employees: Employee[];
 
   @CreateDateColumn()
   createdAt: Date;
