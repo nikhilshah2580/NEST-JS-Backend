@@ -4,33 +4,35 @@ import {
   IsOptional,
   IsString,
   IsUrl,
-  Length,
+  MaxLength,
 } from 'class-validator';
 
 export class CreateCompanyDto {
   @IsString()
-  @Length(2, 150)
-  name: string;
+  @MaxLength(150)
+  CompanyName: string;
 
   @IsOptional()
   @IsString()
   description?: string;
 
   @IsEmail()
+  @MaxLength(150)
   email: string;
 
   @IsOptional()
   @IsString()
-  @Length(7, 20)
+  @MaxLength(20)
   phone?: string;
 
   @IsOptional()
   @IsString()
-  @Length(2, 255)
+  @MaxLength(255)
   address?: string;
 
   @IsOptional()
   @IsUrl()
+  @MaxLength(255)
   website?: string;
 
   @IsOptional()
