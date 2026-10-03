@@ -5,6 +5,8 @@ import { ConfigService } from '@nestjs/config';
 import { databaseConfig } from './config/database.config';
 import { CompanyModule } from './company/company.module';
 import { EmployeeModule } from './employee/employee.module';
+import { SupabaseModule } from './config/supabase.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -19,8 +21,9 @@ import { EmployeeModule } from './employee/employee.module';
     }),
 
     CompanyModule,
-
+    SupabaseModule,
     EmployeeModule,
+    UsersModule,
   ],
 })
 export class AppModule {}
