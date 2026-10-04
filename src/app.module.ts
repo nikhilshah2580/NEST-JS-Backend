@@ -7,6 +7,7 @@ import { CompanyModule } from './company/company.module';
 import { EmployeeModule } from './employee/employee.module';
 import { SupabaseModule } from './config/supabase.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UsersModule } from './users/users.module';
     SupabaseModule,
     EmployeeModule,
     UsersModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

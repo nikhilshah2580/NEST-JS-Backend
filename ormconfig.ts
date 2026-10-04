@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 
 import { Company } from './src/company/entities/company.entity';
 import { Employee } from './src/employee/entities/employee.entity';
+import { User } from './src/users/entities/user.entity';
 
 const dataSource = new DataSource({
   type: 'postgres',
@@ -12,7 +13,7 @@ const dataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 
-  entities: [Company, Employee],
+  entities: [Company, Employee, User],
   migrations: ['src/migrations/*.ts'],
 
   synchronize: false,
