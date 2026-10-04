@@ -11,12 +11,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRole } from './enums/user-role.enum';
 
 @Injectable()
+// Handles local application profiles; passwords remain exclusively in Supabase.
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
 
+  // Return newest user profiles first for administration screens.
   async findAll(): Promise<User[]> {
     return this.userRepository.find({
       order: {
@@ -25,6 +27,7 @@ export class UsersService {
     });
   }
 
+  // Fetch one profile or return a standard 404 response.
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
       where: {
@@ -39,6 +42,7 @@ export class UsersService {
     return user;
   }
 
+  // Find the local profile linked to a verified Supabase user ID.
   async findBySupabaseUserId(supabaseUserId: string): Promise<User | null> {
     return this.userRepository.findOne({
       where: {
@@ -47,6 +51,7 @@ export class UsersService {
     });
   }
 
+  // Used during signup to prevent a duplicate local profile.
   async findByEmail(email: string): Promise<User | null> {
     return this.userRepository.findOne({
       where: {
@@ -55,6 +60,7 @@ export class UsersService {
     });
   }
 
+  // Called only after Supabase successfully creates the identity.
   async createFromSupabase(data: {
     supabaseUserId: string;
     email: string;
@@ -68,6 +74,7 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
+  // Update a profile while preserving the unique email constraint.
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
 
@@ -88,6 +95,7 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
+  // Delete the local profile. Supabase identity deletion is a separate action.
   async remove(id: number): Promise<void> {
     const user = await this.findOne(id);
 

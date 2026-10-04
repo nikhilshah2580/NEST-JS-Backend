@@ -10,6 +10,7 @@ import { UserRole } from '../../users/enums/user-role.enum';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 
 @Injectable()
+// Enforces role metadata set by the @Roles decorator.
 export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
@@ -19,6 +20,7 @@ export class RolesGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     );
 
+    // Routes without @Roles are allowed once authentication has succeeded.
     if (!requiredRoles) {
       return true;
     }

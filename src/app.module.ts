@@ -11,16 +11,19 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    // Makes environment variables available throughout the application.
     ConfigModule.forRoot({
       isGlobal: true,
     }),
 
+    // Initializes PostgreSQL using environment-based configuration.
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: databaseConfig,
     }),
 
+    // Feature modules expose the application's HTTP APIs and services.
     CompanyModule,
     SupabaseModule,
     EmployeeModule,

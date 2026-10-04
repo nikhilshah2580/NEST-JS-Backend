@@ -11,6 +11,7 @@ import { RolesGuard } from './guards/roles.guard';
 @Module({
   imports: [
     UsersModule,
+    // Limits repeated authentication attempts from a single client.
     ThrottlerModule.forRoot([
       {
         name: 'auth',

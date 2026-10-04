@@ -24,6 +24,7 @@ export class AuthService {
     private readonly usersService: UsersService,
   ) {}
 
+  // Signup: create the Supabase identity first, then save the local profile.
   async signup(signupDto: SignupDto) {
     const existingUser = await this.usersService.findByEmail(signupDto.email);
 
@@ -50,7 +51,6 @@ export class AuthService {
         `Supabase signup rejected: code=${error.code ?? 'unknown'} status=${error.status ?? 'unknown'} message=${error.message}`,
       );
 
-      console.error('Supabase signup error:', error);
       throw new BadRequestException('Unable to register with these credentials');
     }
 
@@ -74,6 +74,7 @@ export class AuthService {
     };
   }
 
+  // Login: return a session only when the linked local account is active.
   async login(loginDto: LoginDto) {
     const { data, error } = await this.supabase.auth.signInWithPassword({
       email: loginDto.email,

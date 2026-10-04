@@ -8,6 +8,7 @@ import { supabaseConfig } from './supabase.config';
   imports: [ConfigModule],
   providers: [
     {
+      // Shares one configured Supabase client through dependency injection.
       provide: 'SUPABASE_CLIENT',
       inject: [ConfigService],
       useFactory: supabaseConfig,

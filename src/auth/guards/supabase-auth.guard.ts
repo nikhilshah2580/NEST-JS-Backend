@@ -10,6 +10,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { UsersService } from '../../users/users.service';
 
 @Injectable()
+// Validates a Supabase bearer token and attaches the local user to the request.
 export class SupabaseAuthGuard implements CanActivate {
   constructor(
     @Inject('SUPABASE_CLIENT')
@@ -27,6 +28,7 @@ export class SupabaseAuthGuard implements CanActivate {
       throw new UnauthorizedException('Authorization token is required');
     }
 
+    // Accept exactly one bearer token; reject malformed or multi-token headers.
     const match = /^Bearer\s+([^\s]+)$/i.exec(authorization);
 
     if (!match) {
@@ -54,6 +56,7 @@ export class SupabaseAuthGuard implements CanActivate {
       throw new UnauthorizedException('User account is inactive');
     }
 
+    // RolesGuard and @CurrentUser read this trusted local profile.
     request.user = user;
 
     return true;

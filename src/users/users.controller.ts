@@ -19,27 +19,33 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRole } from './enums/user-role.enum';
 
 @Controller('users')
+// Every user route requires a valid Supabase session and a local active user.
 @UseGuards(SupabaseAuthGuard, RolesGuard)
+// Administrative management routes are restricted by default.
 @Roles(UserRole.ADMIN)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  // Admin: list all local user profiles.
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
+  // Any authenticated user: return only the profile attached by the auth guard.
   @Get('profile')
   @Roles(UserRole.USER, UserRole.ADMIN)
   getProfile(@CurrentUser() user: unknown) {
     return user;
   }
 
+  // Admin: look up one local user profile.
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
   }
 
+  // Admin: update one local user profile.
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -48,6 +54,7 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto);
   }
 
+  // Admin: permanently remove one local user profile.
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.remove(id);
